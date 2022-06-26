@@ -103,18 +103,21 @@ expand = true
 [node name="Sprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
 frames = SubResource( 11 )
+frame = 3
 playing = true
 centered = false
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
 frames = SubResource( 14 )
+frame = 1
 playing = true
 centered = false
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
+frame = 1
 playing = true
 centered = false
 

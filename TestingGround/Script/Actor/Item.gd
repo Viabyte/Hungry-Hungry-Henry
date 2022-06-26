@@ -26,7 +26,7 @@ func _ready():
 func _process(_delta):
 	match state:
 		0:
-			global_position.y += speed
+			global_position.y += (speed + DataManager.fall_mod)
 			if global_position.y >= 216:
 				queue_free()
 		1:

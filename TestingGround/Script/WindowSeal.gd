@@ -20,6 +20,15 @@ func _ready():
 	DataManager.connect_achievements(self)
 	timer.start()
 	var _err = DataManager.connect("make_clone", self, "_on_make_clone")
+	_err = DataManager.connect("died", self, "_on_died")
+
+func _process(_delta):
+	if DataManager.rounds >= 4:
+		_on_died()
+
+func _on_died():
+	DataManager.remove_ui()
+	var _err = get_tree().change_scene("res://Scene/TitleMenu.tscn")
 
 func _on_Timer_timeout():
 	new_item(int(DataManager.random(0, DataManager.POWER.size())))

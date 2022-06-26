@@ -12,6 +12,8 @@ enum POWER{
 	KILLER
 }
 
+var fall_mod := 0.5
+
 var clock_count := 0
 var tv_count := 0
 var skate_count := 0
@@ -41,8 +43,9 @@ signal achieve5
 signal achieve6
 
 signal make_clone
+signal died
 
-onready var ui: Control = UI.instance()
+onready var ui: Control
 onready var music := AudioStreamPlayer.new()
 onready var sound := AudioStreamPlayer.new()
 
@@ -50,13 +53,24 @@ var score := 0
 var rounds := 1
 
 var player_position := Vector2.ZERO
-var time := 100.0
+var time := 60.0
 
 func _ready():
 	add_child(music)
 	add_child(sound)
 	
 	music.volume_db = -4
+
+func remove_ui():
+	if has_node("UI"):
+		ui.queue_free()
+		time = 60
+
+func new_ui():
+	if has_node("UI"):
+		return
+	ui = UI.instance()
+	add_child(ui)
 
 func play_music(path: String):
 	music.stream = load("res://Audio/Music/" + path + ".wav")
@@ -104,7 +118,11 @@ func tictock():
 		time -= 1
 	if time <= 0:
 		rounds += 1
-		time = 100
+		if rounds >= 4:
+			remove_ui()
+			return
+		fall_mod += 0.5
+		time = 60
 		var mod_count := 0
 		var mods := [clock_mod, tv_mod, skate_mod, vacuum_mod, printer_mod]
 		for i in mods:
@@ -151,6 +169,14 @@ func add_count(i: String):
 		"KILLER":
 			killer_count += 1
 			
+			var mod_count := 0
+			var mods := [clock_mod, tv_mod, skate_mod, vacuum_mod, printer_mod]
+			for i in mods:
+				if i > 0:
+					mod_count += 1
+			if mod_count == 0:
+				emit_signal("died")
+			
 			clock_mod -= 1
 			tv_mod -= 1
 			skate_mod -= 1
@@ -167,9 +193,3 @@ func add_count(i: String):
 			vacuum_mod = clamp(vacuum_mod, 0, 3)
 # warning-ignore:narrowing_conversion
 			printer_mod = clamp(printer_mod, 0, 3)
-			
-			print(clock_mod)
-			print(tv_mod)
-			print(skate_mod)
-			print(vacuum_mod)
-			print(printer_mod)
