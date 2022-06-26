@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Graphic/Environment/background.png" type="Texture" id=1]
+[ext_resource path="res://Scene/Actor/Plant.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Script/WindowSeal.gd" type="Script" id=3]
+[ext_resource path="res://Graphic/Environment/reward.png" type="Texture" id=4]
+
+[node name="WindowSeal" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( -8, -16 )
+z_index = -1
+z_as_relative = false
+texture = ExtResource( 1 )
+centered = false
+
+[node name="RewardPlants" type="YSort" parent="."]
+
+[node name="uno" type="Sprite" parent="RewardPlants"]
+visible = false
+position = Vector2( 184, 120 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 2
+
+[node name="dos" type="Sprite" parent="RewardPlants"]
+visible = false
+position = Vector2( 216, 120 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 2
+frame = 1
+
+[node name="tres" type="Sprite" parent="RewardPlants"]
+visible = false
+position = Vector2( 184, 96 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 2
+frame = 2
+
+[node name="cuatro" type="Sprite" parent="RewardPlants"]
+visible = false
+position = Vector2( 216, 96 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 2
+frame = 3
+
+[node name="cinco" type="Sprite" parent="RewardPlants"]
+visible = false
+position = Vector2( 248, 96 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 2
+frame = 4
+
+[node name="seis" type="Sprite" parent="RewardPlants"]
+visible = false
+position = Vector2( 248, 120 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 2
+frame = 5
+
+[node name="EntityLayer" type="Node2D" parent="."]
+
+[node name="Plant" parent="." instance=ExtResource( 2 )]
+position = Vector2( 168, 144 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

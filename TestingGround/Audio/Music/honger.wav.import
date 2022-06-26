@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/honger.wav-b9e6b380687b4963b810dbcf6993064d.sample"
+
+[deps]
+
+source_file="res://Audio/Music/honger.wav"
+dest_files=[ "res://.import/honger.wav-b9e6b380687b4963b810dbcf6993064d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0
