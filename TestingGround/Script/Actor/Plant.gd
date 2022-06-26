@@ -16,15 +16,25 @@ onready var head_player := $HeadPlayer
 onready var timer := $Timer
 onready var collision := $CollisionShape2D
 onready var vacuum_collision := $VacuumCollision
+onready var particle := $Particles
+
+onready var screen_size := get_viewport().get_visible_rect().size
 
 var movement := 0.0
 var speed := 3.5
 
+var is_clone := false
 var is_clock := false
 var on_wheel := false
 var action := false
 var eating := false
 var idling := false
+
+func _ready():
+	vacuum_collision.set_deferred("disabled", true)
+	global_position.y = 144
+	if is_clone:
+		name = "CLONE"
 
 func _process(_delta):
 	if DataManager.clock_mod:
@@ -81,6 +91,16 @@ func _process(_delta):
 		WIDE:
 			gimmick_run(input, "Run", "IdleShort", "TV_Open", true)
 	
+	if is_clone:
+		if not DataManager.printer_mod:
+			queue_free()
+		if global_position.distance_to(DataManager.player_position) < 64:
+			movement = 0
+			if DataManager.player_position.x < screen_size.x:
+				movement = lerp(movement, -1, 0.2)
+			else:
+				movement = lerp(movement, 1, 0.2)
+	
 	if DataManager.skate_mod:
 		global_position.x += movement * 1.5
 	else:
@@ -91,7 +111,9 @@ func _process(_delta):
 	if global_position.x < 32 or global_position.x > 288:
 		movement = 0
 	global_position.x = clamp(global_position.x, 32, 288)
-	DataManager.player_position = global_position
+	
+	if not is_clone:
+		DataManager.player_position = global_position
 
 func gimmick_run(input: float, run_anim: String, idle_anim: String, open_anim: String, is_wide := false):
 	if is_wide:
@@ -144,5 +166,8 @@ func _on_Plant_area_entered(area):
 func _on_Timer_timeout():
 	if DataManager.vacuum_mod:
 		vacuum_collision.disabled = false
+		particle.visible = true
+	else:
+		particle.visible = false
 	if not DataManager.clock_mod:
 		idling = true

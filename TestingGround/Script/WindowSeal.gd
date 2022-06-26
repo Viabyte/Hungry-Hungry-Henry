@@ -1,6 +1,7 @@
 extends Node2D
 
 const Item := preload("res://Scene/Actor/Item.tscn")
+const Player := preload("res://Scene/Actor/Plant.tscn")
 
 onready var timer := $Timer
 onready var entity_layer := $EntityLayer
@@ -18,6 +19,7 @@ func _ready():
 	DataManager.play_music("plant_in_a_hurry")
 	DataManager.connect_achievements(self)
 	timer.start()
+	var _err = DataManager.connect("make_clone", self, "_on_make_clone")
 
 func _on_Timer_timeout():
 	new_item(int(DataManager.random(0, DataManager.POWER.size())))
@@ -94,3 +96,13 @@ func _on_5():
 
 func _on_6():
 	reward6.visible = true
+
+func _on_make_clone():
+	new_clone()
+
+func new_clone():
+	if has_node("CLONE"):
+		return
+	var clone := Player.instance()
+	clone.is_clone = true
+	call_deferred("add_child", clone)

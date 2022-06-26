@@ -40,6 +40,8 @@ signal achieve4
 signal achieve5
 signal achieve6
 
+signal make_clone
+
 onready var ui: Control = UI.instance()
 onready var music := AudioStreamPlayer.new()
 onready var sound := AudioStreamPlayer.new()
@@ -51,7 +53,6 @@ var player_position := Vector2.ZERO
 var time := 100.0
 
 func _ready():
-	add_child(ui)
 	add_child(music)
 	add_child(sound)
 	
@@ -103,6 +104,7 @@ func tictock():
 		time -= 1
 	if time <= 0:
 		rounds += 1
+		time = 100
 		var mod_count := 0
 		var mods := [clock_mod, tv_mod, skate_mod, vacuum_mod, printer_mod]
 		for i in mods:
@@ -145,6 +147,7 @@ func add_count(i: String):
 			if printer_count >= 5:
 				printer_mod += 1
 				printer_count = 0
+				emit_signal("make_clone")
 		"KILLER":
 			killer_count += 1
 			
@@ -154,10 +157,15 @@ func add_count(i: String):
 			vacuum_mod -= 1
 			printer_mod -= 1
 			
+# warning-ignore:narrowing_conversion
 			clock_mod = clamp(clock_mod, 0, 3)
+# warning-ignore:narrowing_conversion
 			tv_mod = clamp(tv_mod, 0, 3)
+# warning-ignore:narrowing_conversion
 			skate_mod = clamp(skate_mod, 0, 3)
+# warning-ignore:narrowing_conversion
 			vacuum_mod = clamp(vacuum_mod, 0, 3)
+# warning-ignore:narrowing_conversion
 			printer_mod = clamp(printer_mod, 0, 3)
 			
 			print(clock_mod)

@@ -10,8 +10,8 @@ config_version=4
 
 [application]
 
-config/name="TestingGround"
-run/main_scene="res://Scene/WindowSeal.tscn"
+config/name="Hungry Hungry Henry"
+run/main_scene="res://Scene/TitleMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
